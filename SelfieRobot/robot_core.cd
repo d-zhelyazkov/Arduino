@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Abstract2WDController">
+    <Position X="4.75" Y="0.5" Width="3" />
+    <AssociationLine Name="aMotor" Type="Motor" FixedFromPoint="true">
+      <Path>
+        <Point X="7.25" Y="2.824" />
+        <Point X="7.25" Y="6" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.047" Y="2.952" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="bMotor" Type="Motor" FixedFromPoint="true">
+      <Path>
+        <Point X="7.562" Y="2.824" />
+        <Point X="7.562" Y="6" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.725" Y="2.964" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AARAAAAAAAAAAACEAAAIAAAAAAAgAAAEAAAAAAgAAAA=</HashCode>
+      <FileName>libs\controller\Abstract2WDController.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="aMotor" />
+      <Field Name="bMotor" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="AngularController2">
+    <Position X="4" Y="3.25" Width="2.5" />
+    <Members>
+      <Method Name="getLastV" Hidden="true" />
+      <Method Name="getTotalDistance" Hidden="true" />
+      <Method Name="getTotalTime" Hidden="true" />
+      <Method Name="getV" Hidden="true" />
+      <Field Name="lastV" Hidden="true" />
+      <Field Name="sumV" Hidden="true" />
+      <Field Name="totalDistanceTurned" Hidden="true" />
+      <Field Name="totalMSTurned" Hidden="true" />
+      <Field Name="turnDirection" Hidden="true" />
+      <Field Name="turnsMade" Hidden="true" />
+      <Method Name="turnTime" Hidden="true" />
+    </Members>
+    <InheritanceLine Type="Abstract2WDController" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.688" Y="2.824" />
+        <Point X="5.688" Y="3.01" />
+        <Point X="5.25" Y="3.01" />
+        <Point X="5.25" Y="3.25" />
+      </Path>
+    </InheritanceLine>
+    <AssociationLine Name="compass" Type="Compass">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.027" Y="0.511" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>ECAAAAAEAQAAIIoAAAAAAAAAAxAAAIAAAgABAAoQAAA=</HashCode>
+      <FileName>libs\controller\AngularController2.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="compass" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Compass">
+    <Position X="3.75" Y="6" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>libs\compass\compass.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExSoftwareSerial">
+    <Position X="0.5" Y="6" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAgACBAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>libs\ExSoftwareSerial.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Motor">
+    <Position X="6.25" Y="6" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACAAIAAIAAAAAAAAAAAAAAEAAAEAAAIAAAAAAEAAA=</HashCode>
+      <FileName>libs\controller\motor\Motor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TargetFinder">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAAEAAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>target_finder.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Main">
+    <Position X="0.5" Y="3" Width="2.5" />
+    <Members>
+      <Field Name="headPoint" Hidden="true" />
+      <Field Name="sidePoint1" Hidden="true" />
+      <Field Name="sidePoint2" Hidden="true" />
+    </Members>
+    <AssociationLine Name="btStream" Type="ExSoftwareSerial">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.079" Y="0.477" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="targetFinder" Type="TargetFinder">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.054" Y="0.528" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIBEgAAAEAAABAAAAAAAAAAQIAAAAABAAABIA=</HashCode>
+      <FileName>Main.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="btStream" />
+      <Field Name="controller" />
+      <Field Name="targetFinder" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

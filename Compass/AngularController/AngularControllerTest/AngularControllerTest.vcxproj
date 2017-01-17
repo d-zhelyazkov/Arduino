@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C5F80730-F44F-4478-BDAE-6634EFC2CA88}</ProjectGuid>
+    <RootNamespace>AngularController</RootNamespace>
+    <ProjectName>AngularControllerTest</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>D:\drive\ITProjects\ArduinoProjects\libraries\compass;D:\drive\ITProjects\ArduinoProjects\libraries\compass\utility;D:\drive\ITProjects\ArduinoProjects\libraries\controller;D:\drive\ITProjects\ArduinoProjects\libraries\controller\utility;D:\drive\ITProjects\ArduinoProjects\libraries\ExStream;D:\drive\ITProjects\ArduinoProjects\libraries\ExStream\utility;D:\drive\ITProjects\ArduinoProjects\libraries\I2Cdev;D:\drive\ITProjects\ArduinoProjects\libraries\I2Cdev\utility;D:\drive\ITProjects\ArduinoProjects\libraries\interruptor;D:\drive\ITProjects\ArduinoProjects\libraries\interruptor\utility;D:\drive\ITProjects\ArduinoProjects\libraries\MPU6050;D:\drive\ITProjects\ArduinoProjects\libraries\MPU6050\utility;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SoftwareSerial\src;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\SoftwareSerial\src\utility;D:\drive\ITProjects\ArduinoProjects\libraries\tools;D:\drive\ITProjects\ArduinoProjects\libraries\tools\utility;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries\Wire\src\utility;C:\Program Files (x86)\Arduino\libraries;C:\Program Files (x86)\Arduino\hardware\arduino\avr\libraries;C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\3j3ah2cj.oih\Micro Platforms\default\debuggers;D:\drive\ITProjects\ArduinoProjects\libraries;C:\Program Files (x86)\Arduino\hardware\arduino\avr\cores\arduino;C:\Program Files (x86)\Arduino\hardware\arduino\avr\variants\standard;D:\drive\ITProjects\ArduinoProjects\Compass\AngularController\AngularControllerTest;C:\Program Files (x86)\Arduino\hardware\tools\avr/avr/include/;C:\Program Files (x86)\Arduino\hardware\tools\avr//avr/include/avr/;C:\Program Files (x86)\Arduino\hardware\tools\avr/lib\gcc\avr\4.8.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>D:\drive\ITProjects\ArduinoProjects\Compass\AngularController\AngularController\__vm\.AngularController.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>__AVR_ATmega328p__;__AVR_ATmega328P__;F_CPU=16000000L;ARDUINO=10609;ARDUINO_AVR_UNO;ARDUINO_ARCH_AVR;__cplusplus=201103L;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="AngularControllerTest.ino">
+      <FileType>CppCode</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="libs\compass\MPUCompass.h" />
+    <ClInclude Include="libs\interruptor\CompassRangeInterruptor.h" />
+    <ClInclude Include="libs\controller\AngularController.h" />
+    <ClInclude Include="libs\compass\compass.h" />
+    <ClInclude Include="libs\controller\Abstract2WDController.h" />
+    <ClInclude Include="libs\controller\motor\Motor.h" />
+    <ClInclude Include="libs\interruptor\AbstractInterruptor.h" />
+    <ClInclude Include="libs\interruptor\WaitInterruptor.h" />
+    <ClInclude Include="libs\tools\Range.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="libs\compass\compass.cpp" />
+    <ClCompile Include="libs\compass\MPUCompass.cpp" />
+    <ClCompile Include="libs\interruptor\CompassRangeInterruptor.cpp" />
+    <ClCompile Include="libs\controller\AngularController.cpp" />
+    <ClCompile Include="libs\controller\Abstract2WDController.cpp" />
+    <ClCompile Include="libs\controller\motor\Motor.cpp" />
+    <ClCompile Include="libs\interruptor\AbstractInterruptor.cpp" />
+    <ClCompile Include="libs\interruptor\WaitInterruptor.cpp" />
+    <ClCompile Include="libs\tools\Range.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
