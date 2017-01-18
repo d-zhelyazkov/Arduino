@@ -3,7 +3,7 @@ Name:		MPUCompassTest.ino
 Created:	7/10/2016 7:23:40 PM
 Author:	XRC_7331
 */
-#include <MPUCompass.h>
+#include "MPUCompass.h"
 
 // the setup function runs once when you press reset or power the board
 MPUCompass* compass;
