@@ -8,3 +8,4 @@
 *.vcxproj
 Compile.vmps.xml
 Configuration.Debug.vmps.xml
+*.vsarduino.h
