@@ -36,8 +36,23 @@ void InterruptPort::interruptOccured(byte portState)
 	mLastPortState = portState;
 
 	for (byte i = 0; changedPins && i < PINS_PER_PORT; i++, changedPins >>= 1) {
-		if ((changedPins & 1) && mInterrupts[i])
+		if (!(changedPins & 1))
+			continue;
+
+		Interrupt* interrupt = mInterrupts[i];
+		if (!interrupt)
+			continue;
+
+		byte pinBinary = bit(i);
+		switch (interrupt->getMode()) {
+		case ONCHANGE:
 			mInterrupts[i]->interruptServiceRoutine();
+			break;
+		case ONRISING:
+			if(portState & pinBinary)
+				mInterrupts[i]->interruptServiceRoutine();
+			break;
+		}
 	}
 }
 

@@ -1,0 +1,11 @@
+*.a
+*.buildinfo
+*.d
+*.elf
+*.hex
+*.ino
+*.o
+*.suo
+*.vcxproj
+Compile.vmps.xml
+Configuration.Debug.vmps.xml
