@@ -5,17 +5,24 @@
 enum InterruptMode{ONCHANGE, ONRISING};
 
 class Interrupt {
-	byte pin;
-	InterruptMode mode = ONCHANGE;
+    byte pin;
+    InterruptMode mode = ONCHANGE;
 
 public:
-	Interrupt(byte pin) : pin(pin) {}
-	Interrupt(byte pin, InterruptMode mode) : pin(pin), mode(mode) {}
+    Interrupt(byte pin) : pin(pin) {}
+    Interrupt(byte pin, InterruptMode mode) : pin(pin), mode(mode) {}
 
-	byte getPin() { return pin; }
-	InterruptMode getMode() { return mode; }
+    byte getPin() { return pin; }
+    InterruptMode getMode() { return mode; }
 
-	virtual void interruptServiceRoutine() = 0;
+    void attach();
+    void deattach();
+
+    virtual void interruptServiceRoutine() = 0;
+
+    ~Interrupt() {
+        deattach();
+    }
 };
 
 void printInterrupt(Interrupt* interrupt);
