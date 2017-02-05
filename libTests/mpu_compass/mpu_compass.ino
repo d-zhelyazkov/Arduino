@@ -5,15 +5,13 @@ Author:	XRC_7331
 */
 #include <MPUCompass.h>
 
-#define MPU_INT_PIN 2
-
 // the setup function runs once when you press reset or power the board
 MPUCompass* compass;
 void setup() {
     Serial.begin(9600);
     Serial.println("Program started.");
-    compass = new MPUCompass(MPU_INT_PIN);
-    compass->startListening();
+    compass = new MPUCompass();
+    //compass->startListening();
 }
 
 // the loop function runs over and over again until power down or reset

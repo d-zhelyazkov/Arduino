@@ -11,14 +11,14 @@ void attachInterrupt(Interrupt * interrupt)
     byte portNum = digitalPinToPCICRbit(pin);
     InterruptPort* port = ATMEGA_328_INT_PORTS[portNum];
     if (!port) {
-        Serial.printf("Enabling interrupt port %hhu.\n", portNum);
+        //Serial.printf("Enabling interrupt port %hhu.\n", portNum);
         port = ATMEGA_328_INT_PORTS[portNum] = new InterruptPort();
         byte portNumBinary = bit(portNum);
         PCIFR |= portNumBinary; // clear any outstanding interrupt
         PCICR |= portNumBinary; // enable interrupts for the port 
     }
 
-    Serial.printf("Attaching interrupt on pin %hhu to port %hhu\n", pin, portNum);
+    //Serial.printf("Attaching interrupt on pin %hhu to port %hhu\n", pin, portNum);
     port->attachInterrupt(interrupt);
 }
 
@@ -30,7 +30,7 @@ void deattachInterrupt(Interrupt * interrupt)
     if (!port)
         return;
 
-    Serial.print("Deattaching interrupt pin "); Serial.print(pin); Serial.print(" from port "); Serial.println(portNum);
+    //Serial.print("Deattaching interrupt pin "); Serial.print(pin); Serial.print(" from port "); Serial.println(portNum);
     port->deattachInterrupt(interrupt);
     //Serial.println("Done disabling pin.");
 
@@ -38,7 +38,7 @@ void deattachInterrupt(Interrupt * interrupt)
         return;
 
     //disable interrupts for this port
-    Serial.print("Disabling interrupt port "); Serial.println(portNum);
+    //Serial.print("Disabling interrupt port "); Serial.println(portNum);
     byte portNumBinary = bit(portNum);
     PCIFR &= !portNumBinary;
     PCICR &= !portNumBinary;

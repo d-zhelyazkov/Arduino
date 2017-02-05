@@ -36,7 +36,7 @@ void setup()
     motorA.setPower(MIN_POWER);
     motorB.setPower(MIN_POWER);
 
-    compass = new MPUCompass(MPU_INT_PIN);
+    compass = new MPUCompass();
     controller = new Controller2WDv2(&motorA, &motorB, compass);
     //controller->learn();
 
@@ -51,9 +51,9 @@ void loop()
 
     String command = Serial.readString();
     if (command.equalsIgnoreCase("learn")) {
-        compass->startListening();
+        //compass->startListening();
         controller->learn();
-        compass->stopListening();
+        //compass->stopListening();
     }
     else if (command.equalsIgnoreCase("turn")) {
         Serial.println("Give a degree.");
