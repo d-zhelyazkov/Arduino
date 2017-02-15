@@ -31,13 +31,12 @@ namespace ArduinoMotorShield {
             setPower(DEF_POWER);
         }
 
-        void setPower(byte power) {
+        bool setPower(byte power) {
             analogWrite(pwmPin, power);
+            return true;
         }
 
         bool setState(MotorState state) {
-            Motor::setState(state);
-
             switch (state) {
             case MotorState::STOPPED:
                 digitalWrite(brakePin, HIGH);
@@ -53,6 +52,12 @@ namespace ArduinoMotorShield {
             }
 
             return true;
+        }
+
+        MotorState getState() {
+            return (digitalRead(brakePin) ? MotorState::STOPPED :
+                (digitalRead(directionPin) ? MotorState::ROT_ANTI_CLOCK :
+                    MotorState::ROT_CLOCK));
         }
     };
 

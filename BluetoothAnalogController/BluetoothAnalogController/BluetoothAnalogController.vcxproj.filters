@@ -21,48 +21,27 @@
     <ClInclude Include="__vm\.BluetoothAnalogController.vsarduino.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="controller\motor\Motor.h">
+    <ClInclude Include="AnalogJoystickController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="controller\Abstract2WDController.h">
+    <ClInclude Include="..\..\libraries\motor\ArduinoMotorShield.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="controller\TestController.h">
+    <ClInclude Include="..\..\libraries\motor\Motor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="interruptor\AbstractInterruptor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="interruptor\WaitInterruptor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="controller\ArrowController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bluetooth\BluetoothModule.h">
+    <ClInclude Include="..\..\libraries\ExStream\ExStream.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="controller\motor\Motor.cpp">
+    <ClCompile Include="AnalogJoystickController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="controller\Abstract2WDController.cpp">
+    <ClCompile Include="..\..\libraries\motor\ArduinoMotorShield.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="controller\TestController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="interruptor\AbstractInterruptor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="interruptor\WaitInterruptor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="controller\ArrowController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="bluetooth\BluetoothModule.cpp">
+    <ClCompile Include="..\..\libraries\ExStream\ExStream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

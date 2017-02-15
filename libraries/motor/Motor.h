@@ -6,19 +6,16 @@
 enum MotorState {STOPPED, ROT_CLOCK, ROT_ANTI_CLOCK };
 
 class Motor
-{
-    MotorState mState = MotorState::STOPPED;
-    
+{    
 public:
 
-    MotorState getState() { return mState; }
+    virtual MotorState getState() = 0;
 
-    //sets motor state
     //returns true in case of successfull operation
-    virtual bool setState(MotorState state){
-        mState = state;
-        return true;
-    }
+    virtual bool setState(MotorState state) = 0;
+
+    //returns true in case of successfull operation
+    virtual bool setPower(byte power) = 0;
 };
 
 
