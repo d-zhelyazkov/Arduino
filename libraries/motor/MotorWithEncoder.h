@@ -1,13 +1,22 @@
 #pragma once
-
-#include "Arduino.h"
 #include "Motor.h"
+#include "PinInterruptCounter.h"
 
-class MotorWithEncoder : public Motor {
-	byte encoderPin;
+class MotorWithEncoder : public InterruptSystem::PinInterruptCounter {
+
+    Motor* mMotor;
+    bool mListening = false;
+    uint16_t mStopTicks = 0;
+
+    void interruptServiceRoutine();
 
 public:
-	MotorWithEncoder(byte directionPin, byte pwmPin, byte brakePin, byte encoderPin);
-	
-	void move(State direction, uint16_t encoderTicks);
+    MotorWithEncoder(Motor* motor, byte encoderPin);
+
+    //async
+    void move(MotorState direction, uint16_t encoderTicks);
+
+    MotorState getState() {
+        return mMotor->getState();
+    }
 };

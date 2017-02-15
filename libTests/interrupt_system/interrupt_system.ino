@@ -1,14 +1,9 @@
-#include <Interrupt.h>
+#include <interrupt_system\PinInterruptCounter.h>
 
-class IntCounter : public Interrupt {
-public:
-    volatile unsigned counter = 0;
-    IntCounter(byte pin) : Interrupt(pin) {}
-    IntCounter(byte pin, InterruptMode mode) : Interrupt(pin, mode) {}
-    void interruptServiceRoutine() { counter++; }
-};
+using namespace InterruptSystem;
 
-IntCounter* counters[4] = { 0 };
+
+PinInterruptCounter* counters[4] = { 0 };
 
 void initCounters();
 void deleteCounters();
@@ -25,8 +20,8 @@ void loop()
     initCounters();
     for (byte i = 0; i < 10; i++) {
         Serial.println();
-        for (IntCounter* counter : counters) {
-            Serial.print(counter->counter);
+        for (PinInterruptCounter* counter : counters) {
+            Serial.print(counter->getValue());
             Serial.print("\t");
         }
         Serial.println();
@@ -37,11 +32,11 @@ void loop()
 
 void initCounters() {
     Serial.println("\nCounters init.");
-    counters[0] = new IntCounter(A2);
-    counters[1] = new IntCounter(A3, ONRISING);
-    counters[2] = new IntCounter(4, ONCHANGE);
-    counters[3] = new IntCounter(12);
-    for (IntCounter* counter : counters) {
+    counters[0] = new PinInterruptCounter(A2);
+    counters[1] = new PinInterruptCounter(A3, ONRISING);
+    counters[2] = new PinInterruptCounter(4, ONCHANGE);
+    counters[3] = new PinInterruptCounter(12);
+    for (PinInterruptCounter* counter : counters) {
         Serial.println("Attaching interrupt.");
         printInterrupt(counter);
         attachInterrupt(counter);
@@ -51,7 +46,7 @@ void initCounters() {
 
 void deleteCounters() {
     Serial.println("\nDeleting counters.");
-    for (IntCounter* counter : counters) {
+    for (PinInterruptCounter* counter : counters) {
         Serial.println("\nDeleting counter.");
         printInterrupt(counter);
         //deattachInterrupt(counter);

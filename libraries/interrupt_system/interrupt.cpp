@@ -1,57 +1,148 @@
 #include "Interrupt.h"
-#include "pins_arduino.h"
-#include "InterruptPort.h"
 
-InterruptPort* ATMEGA_328_INT_PORTS[3] = { 0 };		//ports B(0), C(1), D(2)
+using namespace InterruptSystem;
 
-void attachInterrupt(Interrupt * interrupt)
-{
-    byte pin = interrupt->getPin();
+#define PINS_PER_PORT 8
 
-    byte portNum = digitalPinToPCICRbit(pin);
-    InterruptPort* port = ATMEGA_328_INT_PORTS[portNum];
-    if (!port) {
-        //Serial.printf("Enabling interrupt port %hhu.\n", portNum);
-        port = ATMEGA_328_INT_PORTS[portNum] = new InterruptPort();
-        byte portNumBinary = bit(portNum);
-        PCIFR |= portNumBinary; // clear any outstanding interrupt
-        PCICR |= portNumBinary; // enable interrupts for the port 
+namespace InterruptSystem {
+
+    class InterruptPort {
+        volatile byte mLastPortState = 0;
+        Interrupt* mInterrupts[PINS_PER_PORT] = { 0 };
+
+    public:
+        //returns true on success
+        //false - if there is already attached interrupt on that pin
+        bool attachInterrupt(Interrupt* interrupt);
+
+        void deattachInterrupt(Interrupt* interrupt);
+
+        void interruptOccured(byte portState);
+
+        bool hasEnabledPins();
+    };
+
+
+    InterruptPort* ATMEGA_328_INT_PORTS[3] = { 0 };		//ports B(0), C(1), D(2)
+
+
+    void attachInterrupt(Interrupt * interrupt)
+    {
+        byte pin = interrupt->getPin();
+
+        byte portNum = digitalPinToPCICRbit(pin);
+        InterruptPort* port = ATMEGA_328_INT_PORTS[portNum];
+        if (!port) {
+            //Serial.printf("Enabling interrupt port %hhu.\n", portNum);
+            port = ATMEGA_328_INT_PORTS[portNum] = new InterruptPort();
+            byte portNumBinary = bit(portNum);
+            PCIFR |= portNumBinary; // clear any outstanding interrupt
+            PCICR |= portNumBinary; // enable interrupts for the port 
+        }
+
+        //Serial.printf("Attaching interrupt on pin %hhu to port %hhu\n", pin, portNum);
+        port->attachInterrupt(interrupt);
     }
 
-    //Serial.printf("Attaching interrupt on pin %hhu to port %hhu\n", pin, portNum);
-    port->attachInterrupt(interrupt);
-}
+    void deattachInterrupt(Interrupt * interrupt)
+    {
+        byte pin = interrupt->getPin();
+        byte portNum = digitalPinToPCICRbit(pin);
+        InterruptPort* port = ATMEGA_328_INT_PORTS[portNum];
+        if (!port)
+            return;
 
-void deattachInterrupt(Interrupt * interrupt)
-{
-    byte pin = interrupt->getPin();
-    byte portNum = digitalPinToPCICRbit(pin);
-    InterruptPort* port = ATMEGA_328_INT_PORTS[portNum];
-    if (!port)
-        return;
+        //Serial.print("Deattaching interrupt pin "); Serial.print(pin); Serial.print(" from port "); Serial.println(portNum);
+        port->deattachInterrupt(interrupt);
+        //Serial.println("Done disabling pin.");
 
-    //Serial.print("Deattaching interrupt pin "); Serial.print(pin); Serial.print(" from port "); Serial.println(portNum);
-    port->deattachInterrupt(interrupt);
-    //Serial.println("Done disabling pin.");
+        if (port->hasEnabledPins())
+            return;
 
-    if (port->hasEnabledPins())
-        return;
+        //disable interrupts for this port
+        //Serial.print("Disabling interrupt port "); Serial.println(portNum);
+        byte portNumBinary = bit(portNum);
+        PCIFR &= !portNumBinary;
+        PCICR &= !portNumBinary;
+        //delete port instance
+        delete port;
+        ATMEGA_328_INT_PORTS[portNum] = 0;
+        //Serial.println("Done disabling port.");
+    }
 
-    //disable interrupts for this port
-    //Serial.print("Disabling interrupt port "); Serial.println(portNum);
-    byte portNumBinary = bit(portNum);
-    PCIFR &= !portNumBinary;
-    PCICR &= !portNumBinary;
-    //delete port instance
-    delete port;
-    ATMEGA_328_INT_PORTS[portNum] = 0;
-    //Serial.println("Done disabling port.");
-}
+    bool InterruptPort::attachInterrupt(Interrupt * interrupt)
+    {
+        byte pin = interrupt->getPin();
+        byte portPin = digitalPinToPCMSKbit(pin);
+        if (mInterrupts[portPin])
+            return false;
 
-void printInterrupt(Interrupt* interrupt) {
-    Serial.print("\nInterrupt on pin: ");
-    Serial.println(interrupt->getPin());
-}
+        byte portPinBinary = bit(portPin);
+        *digitalPinToPCMSK(pin) |= portPinBinary; // enable pin
+
+                                                  // set pullups
+        pinMode(pin, INPUT);
+        digitalWrite(pin, HIGH);
+        mLastPortState |= portPinBinary;
+
+        mInterrupts[portPin] = interrupt;
+
+        return true;
+    }
+
+    void InterruptPort::deattachInterrupt(Interrupt * interrupt)
+    {
+        byte pin = interrupt->getPin();
+        byte portPin = digitalPinToPCMSKbit(pin);
+        byte portPinBinary = bit(portPin);
+        *digitalPinToPCMSK(pin) &= ~portPinBinary; // disable pin
+        mInterrupts[portPin] = 0;
+    }
+
+    void InterruptPort::interruptOccured(byte portState)
+    {
+        byte changedPins = portState ^ mLastPortState;
+        mLastPortState = portState;
+
+        for (byte i = 0; changedPins && i < PINS_PER_PORT; i++, changedPins >>= 1) {
+            if (!(changedPins & 1))
+                continue;
+
+            Interrupt* interrupt = mInterrupts[i];
+            if (!interrupt)
+                continue;
+
+            byte pinBinary = bit(i);
+            switch (interrupt->getMode()) {
+            case ONCHANGE:
+                mInterrupts[i]->interruptServiceRoutine();
+                break;
+            case ONRISING:
+                if (portState & pinBinary)
+                    mInterrupts[i]->interruptServiceRoutine();
+                break;
+            }
+        }
+    }
+
+    bool InterruptPort::hasEnabledPins()
+    {
+        for (Interrupt* interrupt : mInterrupts)
+            if (interrupt)
+                return true;
+        return false;
+    }
+
+    void printInterrupt(Interrupt* interrupt) {
+        Serial.print("\nInterrupt on pin: ");
+        Serial.println(interrupt->getPin());
+    }
+
+    Interrupt::~Interrupt()
+    {
+        deattachInterrupt(this);
+    }
+};
 
 
 // port B ISR; handle pin change interrupt for D8 to D15 here
@@ -75,10 +166,3 @@ ISR(PCINT2_vect)
         ATMEGA_328_INT_PORTS[2]->interruptOccured(PIND);
 }
 
-void Interrupt::attach() {
-    attachInterrupt(this);
-}
-
-void Interrupt::deattach() {
-    deattachInterrupt(this);
-}

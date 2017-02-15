@@ -46,14 +46,14 @@ void Controller2WDv2::turn(uint16_t encoderTicks, ControllerState turnDir)
 {
 	WAIT_STOP
 
-	State wheelsRotationDir;
+	MotorState wheelsRotationDir;
 	switch (turnDir)
 	{
 	case ControllerState::TURNING_LEFT:
-			wheelsRotationDir = State::ROT_CLOCK;
+			wheelsRotationDir = MotorState::ROT_CLOCK;
 		break;
 	case ControllerState::TURNING_RIGHT:
-		wheelsRotationDir = State::ROT_ANTI_CLOCK;
+		wheelsRotationDir = MotorState::ROT_ANTI_CLOCK;
 		break;
 	default:
 		return;

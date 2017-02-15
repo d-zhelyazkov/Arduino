@@ -1,31 +1,37 @@
 #pragma once
 
-#include "Arduino.h"
+#include "arduino.h"
 
-enum InterruptMode{ONCHANGE, ONRISING};
+namespace InterruptSystem {
 
-class Interrupt {
-    byte pin;
-    InterruptMode mode = ONCHANGE;
+    enum InterruptMode { ONCHANGE, ONRISING };
 
-public:
-    Interrupt(byte pin) : pin(pin) {}
-    Interrupt(byte pin, InterruptMode mode) : pin(pin), mode(mode) {}
+    class InterruptPort;
 
-    byte getPin() { return pin; }
-    InterruptMode getMode() { return mode; }
+    class Interrupt {
+        byte pin;
+        InterruptMode mode = ONCHANGE;
 
-    void attach();
-    void deattach();
+    protected:
+        virtual void interruptServiceRoutine() = 0;
 
-    virtual void interruptServiceRoutine() = 0;
+        friend class InterruptPort;
 
-    ~Interrupt() {
-        deattach();
-    }
+    public:
+        Interrupt(byte pin) : pin(pin) {}
+        Interrupt(byte pin, InterruptMode mode) : pin(pin), mode(mode) {}
+
+        byte getPin() { return pin; }
+        InterruptMode getMode() { return mode; }
+
+
+        ~Interrupt();
+    };
+
+
+    void printInterrupt(Interrupt* interrupt);
+
+    void attachInterrupt(Interrupt* interrupt);
+    void deattachInterrupt(Interrupt* interrupt);
+
 };
-
-void printInterrupt(Interrupt* interrupt);
-
-void attachInterrupt(Interrupt* interrupt);
-void deattachInterrupt(Interrupt* interrupt);

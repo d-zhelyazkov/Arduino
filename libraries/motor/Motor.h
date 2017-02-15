@@ -3,21 +3,22 @@
 
 #include "Arduino.h"
 
-enum State {STOPPED, ROT_CLOCK, ROT_ANTI_CLOCK };
+enum MotorState {STOPPED, ROT_CLOCK, ROT_ANTI_CLOCK };
 
 class Motor
 {
-	byte directionPin;
-	byte pwmPin;
-	byte brakePin;
-	State state = State::STOPPED;
-
+    MotorState mState = MotorState::STOPPED;
+    
 public:
-	Motor(byte directionPin, byte pwmPin, byte brakePin);
-	void move(State direction);
-	void stop();
-	void setPower(byte power);
-	State getState();
+
+    MotorState getState() { return mState; }
+
+    //sets motor state
+    //returns true in case of successfull operation
+    virtual bool setState(MotorState state){
+        mState = state;
+        return true;
+    }
 };
 
 
