@@ -17,22 +17,10 @@ ExStream * ExStream::getInstance(uint8_t id) {
     return sharedInstances[id];
 }
 
-size_t ExStream::print(bool b)
-{
-    switch (b) {
-    case true:
-        return mStream->print("true");
-    case false:
-        return mStream->print("false");
-    }
+size_t ExStream::print(bool b) {
+    return mStream->print((b)? "true" : "false");
 }
 
-size_t ExStream::println(bool b)
-{
-    switch (b) {
-    case true:
-        return mStream->println("true");
-    case false:
-        return mStream->println("false");
-    }
+size_t ExStream::println(bool b) {
+    return mStream->println((b) ? "true" : "false");
 }

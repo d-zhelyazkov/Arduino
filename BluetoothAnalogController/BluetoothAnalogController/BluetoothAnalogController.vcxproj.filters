@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BluetoothAnalogController.ino" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.BluetoothAnalogController.vsarduino.h">
@@ -31,6 +32,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\libraries\ExStream\ExStream.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

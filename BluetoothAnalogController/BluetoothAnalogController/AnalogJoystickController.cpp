@@ -3,7 +3,7 @@
 
 
 #define MAX_POWER 255
-#define MIN_POWER 100
+#define MIN_POWER 0
 
 
 AnalogJoystickController::AnalogJoystickController(Motor* left, Motor* right)

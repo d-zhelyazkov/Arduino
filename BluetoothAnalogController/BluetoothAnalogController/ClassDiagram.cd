@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="Motor">
+    <Position X="5.5" Y="4.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAQ=</HashCode>
+      <FileName>D:\Projects\_personal\Arduino\libraries\motor\Motor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExStream">
+    <Position X="0.75" Y="0.5" Width="3.75" />
+    <TypeIdentifier>
+      <HashCode>EAQAAAAEABACAAgAACAABAAAAAAAAAQAAAAIAAAAAAA=</HashCode>
+      <FileName>D:\Projects\_personal\Arduino\libraries\ExStream\ExStream.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ArduinoMotorShield" Collapsed="true">
+    <Position X="1.75" Y="4.75" Width="1.75" />
+    <AssociationLine Name="MOTOR_A" Type="Motor">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="1.058" Y="-0.096" Height="0.182" Width="0.891" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="MOTOR_B" Type="Motor">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="1.079" Y="-0.086" Height="0.182" Width="0.87" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\Projects\_personal\Arduino\libraries\motor\ArduinoMotorShield.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="MOTOR_A" />
+      <Field Name="MOTOR_B" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ShieldMotor">
+    <Position X="0.75" Y="5.75" Width="4" />
+    <InheritanceLine Type="Motor" FixedToPoint="true">
+      <Path>
+        <Point X="6.75" Y="5.988" />
+        <Point X="6.75" Y="6.437" />
+        <Point X="4.75" Y="6.437" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>QAACAAAAAAAAAAAAAAAAAAAAAAAAEBAACAAAAAAEAAQ=</HashCode>
+      <FileName>D:\Projects\_personal\Arduino\libraries\motor\ArduinoMotorShield.cpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnalogJoystickController">
+    <Position X="5" Y="2.5" Width="3.5" />
+    <AssociationLine Name="mLeftMotor" Type="Motor" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.125" Y="3.988" />
+        <Point X="6.125" Y="4.244" />
+        <Point X="6.125" Y="4.244" />
+        <Point X="6.125" Y="4.5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.505" Y="0.227" Height="0.182" Width="1.003" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="mRightMotor" Type="Motor" FixedToPoint="true">
+      <Path>
+        <Point X="7.312" Y="3.988" />
+        <Point X="7.312" Y="4.5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="-0.525" Y="0.237" Height="0.182" Width="1.032" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAgAIgAAQAAAAAAAAA=</HashCode>
+      <FileName>AnalogJoystickController.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="mLeftMotor" />
+      <Field Name="mRightMotor" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Main">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <AssociationLine Name="analogJoystickController" Type="AnalogJoystickController" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.75" Y="1.796" />
+        <Point X="6.75" Y="2.148" />
+        <Point X="6.75" Y="2.148" />
+        <Point X="6.75" Y="2.5" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.784" Y="0.37" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="btStream" Type="ExStream">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.508" Y="-0.109" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAACAAAAAAAAAAAQAAAAAABAAAAAA=</HashCode>
+      <FileName>Main.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="analogJoystickController" />
+      <Field Name="btStream" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="MotorState">
+    <Position X="6" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAoAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>D:\Projects\_personal\Arduino\libraries\motor\Motor.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

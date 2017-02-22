@@ -9,8 +9,9 @@ Motors on A and B ports are defined.
 
 #include "Motor.h"
 
-namespace ArduinoMotorShield {
-    extern Motor* MOTOR_A;
-    extern Motor* MOTOR_B;
+class ArduinoMotorShield {
+public:
+    static Motor* const MOTOR_A;
+    static Motor* const MOTOR_B;
 };
 
