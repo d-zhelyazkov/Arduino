@@ -1,11 +1,13 @@
 #pragma once
 #include "Motor.h"
 #include "PinInterruptCounter.h"
+#include "MotorDecorator.h"
 
-class MotorWithEncoder : public InterruptSystem::PinInterruptCounter {
+class MotorWithEncoder :
+    public InterruptSystem::PinInterruptCounter,
+    public MotorDecorator {
 
-    Motor* mMotor;
-    bool mListening = false;
+    volatile bool mListening = false;
     uint16_t mStopTicks = 0;
 
     void interruptServiceRoutine();
@@ -16,7 +18,4 @@ public:
     //async
     void move(MotorState direction, uint16_t encoderTicks);
 
-    MotorState getState() {
-        return mMotor->getState();
-    }
 };

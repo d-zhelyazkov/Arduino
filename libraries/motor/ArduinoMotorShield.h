@@ -9,6 +9,13 @@ Motors on A and B ports are defined.
 
 #include "Motor.h"
 
+#define A_DIR 12
+#define A_PWM 3
+#define A_BRK 9
+#define B_DIR 13
+#define B_PWM 11
+#define B_BRK 8
+
 class ArduinoMotorShield {
 public:
     static Motor* const MOTOR_A;

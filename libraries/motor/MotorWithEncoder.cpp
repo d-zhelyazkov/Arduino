@@ -1,7 +1,8 @@
 #include "MotorWithEncoder.h"
 
 MotorWithEncoder::MotorWithEncoder(Motor* motor, byte encoderPin)
-    : mMotor(motor), PinInterruptCounter(encoderPin) {
+    : PinInterruptCounter(encoderPin), MotorDecorator(*motor) {
+
     attachInterrupt(this);
 }
 
@@ -18,19 +19,33 @@ void MotorWithEncoder::move(MotorState direction, uint16_t encoderTicks)
         mStopTicks = encoderTicks;
     }
 
+    Serial.print("Starting "); Serial.print(getName());
+    Serial.print(" New state: "); Serial.print(motorStateToStr(direction));
+    Serial.print(" Ticks: "); Serial.print(PinInterruptCounter::getValue());
+    Serial.print(" - "); Serial.println(mStopTicks);
+
     mListening = true;
-    mMotor->setState(direction);
+    setState(direction);
 }
 
 void MotorWithEncoder::interruptServiceRoutine()
 {
     PinInterruptCounter::interruptServiceRoutine();
+    uint16_t currentTicks = PinInterruptCounter::getValue();
+    //Serial.print("Tick received: "); Serial.print(getName());
+    //Serial.print("; Ticks: "); Serial.print(currentTicks);
+    //Serial.print(" - "); Serial.println(mStopTicks);
+
     if (!mListening)
         return;
 
-    if (mStopTicks < PinInterruptCounter::getValue())
+    if (currentTicks < mStopTicks)
         return;
 
-    mMotor->setState(MotorState::STOPPED);
     mListening = false;
+    setState(MotorState::STOPPED);
+
+    Serial.print("Stopped "); Serial.print(getName());
+    Serial.print("; Ticks: "); Serial.print(currentTicks);
+    Serial.print(" - "); Serial.println(mStopTicks);
 }

@@ -4,6 +4,7 @@
 #include "Arduino.h"
 
 enum MotorState {STOPPED, ROT_CLOCK, ROT_ANTI_CLOCK };
+char* motorStateToStr(MotorState state);
 
 class Motor
 {    
@@ -16,6 +17,6 @@ public:
 
     //returns true in case of successfull operation
     virtual bool setPower(byte power) = 0;
+
+    virtual char* getName() = 0;
 };
-
-
