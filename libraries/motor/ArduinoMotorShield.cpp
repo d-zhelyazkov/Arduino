@@ -15,15 +15,13 @@ class ShieldMotor :
 
 public:
     ShieldMotor(byte directionPin, byte pwmPin, byte brakePin, char* name) :
-        directionPin(directionPin)
-        , pwmPin(pwmPin)
-        , brakePin(brakePin)
-        , name(name)
+        directionPin(directionPin), pwmPin(pwmPin), brakePin(brakePin), name(name)
     {
+
         pinMode(directionPin, OUTPUT);
         pinMode(brakePin, OUTPUT);
 
-            digitalWrite(brakePin, HIGH);
+        stop();
         setPower(DEF_POWER);
     }
 
@@ -33,27 +31,51 @@ public:
     }
 
     bool setState(MotorState state) {
+
         switch (state) {
         case MotorState::STOPPED:
-            digitalWrite(brakePin, HIGH);
-            break;
+            return stop();
         case MotorState::ROT_CLOCK:
-            digitalWrite(directionPin, 0); //Establishes direction
-            digitalWrite(brakePin, LOW);   //Disengage the Brake
-            break;
         case MotorState::ROT_ANTI_CLOCK:
-            digitalWrite(directionPin, 1); //Establishes direction
-            digitalWrite(brakePin, LOW);   //Disengage the Brake
-            break;
+            return (
+                setDirection(state) 
+                && start());
         }
 
+        return false;
+    }
+
+    bool setDirection(MotorState state) {
+
+        switch (state)
+        {
+        case ROT_CLOCK:
+            digitalWrite(directionPin, LOW); //Establishes direction
+            return true;
+        case ROT_ANTI_CLOCK:
+            digitalWrite(directionPin, HIGH);
+            return true;
+        }
+
+        return false;
+    }
+
+    bool start() {
+        digitalWrite(brakePin, LOW);   //Disengage the Brake
+        return true;
+    }
+
+    bool stop() {
+        digitalWrite(brakePin, HIGH);
         return true;
     }
 
     MotorState getState() {
-        return (digitalRead(brakePin) ? MotorState::STOPPED :
-            (digitalRead(directionPin) ? MotorState::ROT_ANTI_CLOCK :
-                MotorState::ROT_CLOCK));
+        return (digitalRead(brakePin)
+            ? MotorState::STOPPED
+            : (digitalRead(directionPin)
+                ? MotorState::ROT_ANTI_CLOCK
+                : MotorState::ROT_CLOCK));
     }
 
     char* getName() {

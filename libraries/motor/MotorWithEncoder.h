@@ -1,21 +1,25 @@
 #pragma once
+
 #include "Motor.h"
 #include "PinInterruptCounter.h"
-#include "MotorDecorator.h"
+#include "MotorObserver.h"
 
 class MotorWithEncoder :
     public InterruptSystem::PinInterruptCounter,
-    public MotorDecorator {
+    public MotorObservable {
 
-    volatile bool mListening = false;
-    uint16_t mStopTicks = 0;
+    uint16_t stopTicks = 0;
 
     void interruptServiceRoutine();
 
 public:
-    MotorWithEncoder(Motor* motor, byte encoderPin);
+    MotorWithEncoder(Motor* motor, byte encoderPin) :
+        MotorObservable(*motor), PinInterruptCounter(encoderPin) {}
 
-    //async
-    void move(MotorState direction, uint16_t encoderTicks);
+    //starts the motor
+    //will asynchronously stop it after the specified encoder ticks
+    //resets the interrupt counter
+    //returns true if motor started successfully
+    bool move(MotorState direction, uint16_t encoderTicks);
 
 };

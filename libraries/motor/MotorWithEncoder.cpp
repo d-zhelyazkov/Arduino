@@ -1,51 +1,53 @@
 #include "MotorWithEncoder.h"
+#include "ExStream.h"
 
-MotorWithEncoder::MotorWithEncoder(Motor* motor, byte encoderPin)
-    : PinInterruptCounter(encoderPin), MotorDecorator(*motor) {
+#define DEBUG(x)
 
-    attachInterrupt(this);
-}
-
-void MotorWithEncoder::move(MotorState direction, uint16_t encoderTicks)
+bool MotorWithEncoder::move(MotorState direction, uint16_t encoderTicks)
 {
-    if (direction == MotorState::STOPPED)
-        return;
-
-    uint16_t currentTicks = PinInterruptCounter::getValue();
-    mStopTicks = currentTicks + encoderTicks;
-    if (mStopTicks <= currentTicks) {
-        //uint16 overflow
-        PinInterruptCounter::resetCounter();
-        mStopTicks = encoderTicks;
+    switch (direction)
+    {
+    case MotorState::ROT_CLOCK:
+    case MotorState::ROT_ANTI_CLOCK:
+        break;
+    default:
+        return false;
     }
 
-    Serial.print("Starting "); Serial.print(getName());
-    Serial.print(" New state: "); Serial.print(motorStateToStr(direction));
-    Serial.print(" Ticks: "); Serial.print(PinInterruptCounter::getValue());
-    Serial.print(" - "); Serial.println(mStopTicks);
+    PinInterruptCounter::resetCounter();
+    stopTicks = encoderTicks;
+    InterruptSystem::attachInterrupt(this);
 
-    mListening = true;
-    setState(direction);
+    bool successful = setState(direction);
+    if (!successful) {
+        InterruptSystem::deattachInterrupt(this);
+        return false;
+    }
+
+    DEBUG(
+    ExSerial.printf("%s started %s for %d ticks\n",
+        getName(), motorStateToStr(direction), encoderTicks);
+    )
+
+    return true;
 }
 
 void MotorWithEncoder::interruptServiceRoutine()
 {
     PinInterruptCounter::interruptServiceRoutine();
     uint16_t currentTicks = PinInterruptCounter::getValue();
-    //Serial.print("Tick received: "); Serial.print(getName());
-    //Serial.print("; Ticks: "); Serial.print(currentTicks);
-    //Serial.print(" - "); Serial.println(mStopTicks);
+    
+    DEBUG(
+    ExSerial.printf("%s - tick\n", getName());
+    )
 
-    if (!mListening)
+    if (currentTicks < stopTicks)
         return;
 
-    if (currentTicks < mStopTicks)
-        return;
+    InterruptSystem::deattachInterrupt(this);
+    stop();
 
-    mListening = false;
-    setState(MotorState::STOPPED);
-
-    Serial.print("Stopped "); Serial.print(getName());
-    Serial.print("; Ticks: "); Serial.print(currentTicks);
-    Serial.print(" - "); Serial.println(mStopTicks);
+    DEBUG(
+    ExSerial.printf("Stopped %s\n", getName());
+    )
 }

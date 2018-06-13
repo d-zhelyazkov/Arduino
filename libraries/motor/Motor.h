@@ -16,7 +16,11 @@ public:
     virtual bool setState(MotorState state) = 0;
 
     //returns true in case of successfull operation
+    virtual bool stop() = 0;
+
+    //returns true in case of successfull operation
     virtual bool setPower(byte power) = 0;
 
     virtual char* getName() = 0;
+
 };

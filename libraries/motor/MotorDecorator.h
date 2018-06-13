@@ -1,6 +1,6 @@
 #pragma once
 
-#include "motor.h"
+#include "Motor.h"
 
 class MotorDecorator : public Motor {
 
@@ -9,21 +9,26 @@ class MotorDecorator : public Motor {
 public:
     MotorDecorator(Motor& motor) : motor(motor) {}
 
-    MotorState getState() {
+    virtual MotorState getState() {
         return motor.getState();
     }
 
     //returns true in case of successfull operation
-    bool setState(MotorState state) {
+    virtual bool setState(MotorState state) {
         return motor.setState(state);
     }
 
     //returns true in case of successfull operation
-    bool setPower(byte power) {
+    virtual bool stop() {
+        return motor.stop();
+    }
+
+    //returns true in case of successfull operation
+    virtual bool setPower(byte power) {
         return motor.setPower(power);
     }
 
-    char* getName() {
+    virtual char* getName() {
         return motor.getName();
     }
 };

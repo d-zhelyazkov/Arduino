@@ -4,12 +4,12 @@ char* motorStateToStr(MotorState state) {
     switch (state)
     {
     case STOPPED:
-        return "STOPPED";
+        return "STOP";
     case ROT_CLOCK:
-        return "ROTATING CLOCKWISE";
+        return "ROT_CLOCK";
     case ROT_ANTI_CLOCK:
-        return "ROTATING ANTI CLOCKWISE";
+        return "ROT_A_CLOCK";
     default:
-        return "UNKNOWN";
+        return "N/A";
     }
 }
