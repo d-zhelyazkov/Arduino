@@ -1,28 +1,28 @@
 #pragma once
 
 #include "Arduino.h"
-#include "Stream.h"
+#include "StreamDecorator.h"
 
 #define TIMEOUT 100
 #define RECEIVE_TRIES 10
 #define SHARED_INSTANCES 10
 
-class ExStream
-{
+
+class ExStream : public StreamDecorator {
 
     static ExStream* sharedInstances[SHARED_INSTANCES];
-    Stream* mStream;
+    static ExStream exSerial;
 
 public:
 
     static ExStream* createInstance(uint8_t id, Stream* const stream);
     static ExStream* getInstance(uint8_t id);
-
-    ExStream(Stream* const stream) : mStream(stream) {}
-    
-    Stream* getBaseStream() {
-        return mStream;
+    static ExStream& serial() {
+        return exSerial;
     }
+
+    ExStream(Stream& stream) : StreamDecorator(stream) {}
+    ExStream(Stream* const stream) : StreamDecorator(*stream) {}
 
     //returns:
     //0 - success
@@ -42,14 +42,14 @@ public:
         byte bytes[bytesCount];
         for (int i = bytesCount - 1; i >= 0; i--)
         {
-            if (!mStream->available()) {
-                for (int trY = RECEIVE_TRIES; !mStream->available(); trY--) {
+            if (!available()) {
+                for (int trY = RECEIVE_TRIES; !available(); trY--) {
                     if (!trY)
                         return 1;
                     delay(TIMEOUT);
                 }
             }
-            bytes[i] = mStream->read();
+            bytes[i] = StreamDecorator::read();
         }
 
         memcpy(result, &bytes, bytesCount);
@@ -70,16 +70,16 @@ public:
         return 0;
     }
 
+    //clears the input stream
+    //returns number of bytes cleared
+    size_t clear();
+
     //prints "true"/"false"
     size_t print(bool b);
-    //prevents typecasting
-    template<typename T>
-    size_t print(T) = delete;
 
     //prints "true\n"/"false\n"
     size_t println(bool b);
-    //prevents typecasting
-    template<typename T>
-    size_t println(T) = delete;
+
+    void printf(const char *format, ...);
 
 };
