@@ -1,12 +1,14 @@
 #include "ExStream.h"
 #include "Common.h"
 
+#include <stdarg.h>
 
-#define PRINTF_BUF 80
 
+#define PRINTF_BUF 128
+#define WORD_BUF 80
 
 ExStream* ExStream::sharedInstances[] = { 0 };
-ExStream ExStream::exSerial = ExStream(Serial);
+ExStream ExSerial = ExStream(Serial);
 
 ExStream * ExStream::createInstance(uint8_t id, Stream * const stream) {
     if (id >= SHARED_INSTANCES)
@@ -44,16 +46,42 @@ size_t ExStream::println(bool b) {
     return println((b) ? "true" : "false");
 }
 
+//https://playground.arduino.cc/Main/Printf
 void ExStream::printf(const char * format, ...) {
     char buf[PRINTF_BUF];
-    va_list ap;
-    va_start(ap, format);
-    vsnprintf(buf, sizeof(buf), format, ap);
-    for (char *p = &buf[0]; *p; p++) // emulate cooked mode for newlines
-    {
-        if (*p == '\n')
-            write('\r');
-        write(*p);
+    va_list args;
+    va_start(args, format);
+    vsnprintf(buf, PRINTF_BUF, format, args);
+    va_end(args);
+    print(buf);
+}
+
+String ExStream::readWord()
+{
+    char word[WORD_BUF + 1] = { 0 };
+    for (uint8_t i = 0; (i < WORD_BUF) && available(); i++) {
+        char c = read();
+        switch (c)
+        {
+        case ' ':
+        case '\t':
+        case '\n':
+        case '\r':
+            if (i == 0) {
+                i--;                //whitespaces in the beginning; skip them
+            }
+            else {
+                //printf("The read word is '%s'\n", word);
+                return String(word);
+            }
+            break;
+
+        default:
+            word[i] = c;
+        }
+
     }
-    va_end(ap);
+
+    //printf("THE read word is '%s'\n", word);
+    return String(word);
 }

@@ -11,18 +11,18 @@
 class ExStream : public StreamDecorator {
 
     static ExStream* sharedInstances[SHARED_INSTANCES];
-    static ExStream exSerial;
 
 public:
 
     static ExStream* createInstance(uint8_t id, Stream* const stream);
     static ExStream* getInstance(uint8_t id);
-    static ExStream& serial() {
-        return exSerial;
-    }
 
     ExStream(Stream& stream) : StreamDecorator(stream) {}
     ExStream(Stream* const stream) : StreamDecorator(*stream) {}
+
+    using Stream::read;
+    using Stream::print;
+    using Stream::println;
 
     //returns:
     //0 - success
@@ -49,7 +49,7 @@ public:
                     delay(TIMEOUT);
                 }
             }
-            bytes[i] = StreamDecorator::read();
+            bytes[i] = read();
         }
 
         memcpy(result, &bytes, bytesCount);
@@ -70,6 +70,8 @@ public:
         return 0;
     }
 
+    String readWord();
+
     //clears the input stream
     //returns number of bytes cleared
     size_t clear();
@@ -83,3 +85,5 @@ public:
     void printf(const char *format, ...);
 
 };
+
+extern ExStream ExSerial;

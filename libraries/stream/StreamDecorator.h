@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Stream.h"
-#include "PrinterDecorator.h"
 
 
 //a char not found in a valid ASCII numeric field
@@ -9,15 +8,13 @@
 
 
 class StreamDecorator : 
-    public PrinterDecorator,
     public Stream {
 
     Stream& decoratedStream;
     
 public:
 
-    StreamDecorator(Stream& stream) : 
-        PrinterDecorator(stream), decoratedStream(stream) {}
+    StreamDecorator(Stream& stream) : decoratedStream(stream) {}
 
     Stream* getBaseStream() {
         return &decoratedStream;
@@ -115,9 +112,106 @@ public:
     virtual String readStringUntil(char terminator) {
         return decoratedStream.readStringUntil(terminator);
     }
+    
+    virtual int getWriteError() {
+        return decoratedStream.getWriteError();
+    }
+    virtual void clearWriteError() {
+        decoratedStream.clearWriteError();
+    }
 
     //Print abstract method
-    virtual size_t write(uint8_t B) {
-        return decoratedStream.write(B);
+    virtual size_t write(uint8_t b) {
+        return decoratedStream.write(b);
+    }
+    virtual size_t write(const char *str) {
+        return decoratedStream.write(str);
+    }
+    virtual size_t write(const uint8_t *buffer, size_t size) {
+        return decoratedStream.write(buffer, size);
+    }
+    virtual size_t write(const char *buffer, size_t size) {
+        return decoratedStream.write(buffer, size);
+    }
+
+    // default to zero, meaning "a single write may block"
+    // should be overriden by subclasses with buffering
+    virtual int availableForWrite() {
+        return decoratedStream.availableForWrite();
+    }
+
+    virtual size_t print(const __FlashStringHelper* helper) {
+        return decoratedStream.print(helper);
+    }
+    virtual size_t print(const String& str) {
+        return decoratedStream.print(str);
+    }
+    virtual size_t print(const char* str) {
+        return decoratedStream.print(str);
+    }
+    virtual size_t print(char c) {
+        return decoratedStream.print(c);
+    }
+    virtual size_t print(unsigned char num, int format = DEC) {
+        return decoratedStream.print(num, format);
+    }
+    virtual size_t print(int num, int format = DEC) {
+        return decoratedStream.print(num, format);
+    }
+    virtual size_t print(unsigned int num, int format = DEC) {
+        return decoratedStream.print(num, format);
+    }
+    virtual size_t print(long num, int format = DEC) {
+        return decoratedStream.print(num, format);
+    }
+    virtual size_t print(unsigned long num, int format = DEC) {
+        return decoratedStream.print(num, format);
+    }
+    virtual size_t print(double num, int places = 2) {
+        return decoratedStream.print(num, places);
+    }
+    virtual size_t print(const Printable& printable) {
+        return decoratedStream.print(printable);
+    }
+
+    virtual size_t println(const __FlashStringHelper* helper) {
+        return decoratedStream.println(helper);
+    }
+    virtual size_t println(const String& str) {
+        return decoratedStream.println(str);
+    }
+    virtual size_t println(const char* str) {
+        return decoratedStream.println(str);
+    }
+    virtual size_t println(char c) {
+        return decoratedStream.println(c);
+    }
+    virtual size_t println(unsigned char num, int format = DEC) {
+        return decoratedStream.println(num, format);
+    }
+    virtual size_t println(int num, int format = DEC) {
+        return decoratedStream.println(num, format);
+    }
+    virtual size_t println(unsigned int num, int format = DEC) {
+        return decoratedStream.println(num, format);
+    }
+    virtual size_t println(long num, int format = DEC) {
+        return decoratedStream.println(num, format);
+    }
+    virtual size_t println(unsigned long num, int format = DEC) {
+        return decoratedStream.println(num, format);
+    }
+    virtual size_t println(double num, int places = 2) {
+        return decoratedStream.println(num, places);
+    }
+    virtual size_t println(const Printable& printable) {
+        return decoratedStream.println(printable);
+    }
+    virtual size_t println() {
+        return decoratedStream.println();
+    }
+
+    virtual void flush() {
+        decoratedStream.flush();
     }
 };
