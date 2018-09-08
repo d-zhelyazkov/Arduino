@@ -3,9 +3,13 @@
 
 #include <stdarg.h>
 
+#define DEBUG(x)            //disabled
+//#define DEBUG(x) x          //enabled
 
 #define PRINTF_BUF 128
 #define WORD_BUF 80
+#define WAIT_STEP 50
+
 
 ExStream* ExStream::sharedInstances[] = { 0 };
 ExStream ExSerial = ExStream(Serial);
@@ -34,7 +38,7 @@ size_t ExStream::clear()
     size_t bytesRead = readBytes(buffer, bytes);
     deleteArray(buffer);
 
-    //exSerial.printf("Cleared %d bytes of %d\n", bytesRead, bytes);
+    DEBUG(printf("Cleared %dB\n", bytesRead));
     return bytesRead;
 }
 
@@ -56,6 +60,23 @@ void ExStream::printf(const char * format, ...) {
     print(buf);
 }
 
+int ExStream::waitAvailable(int bytes)
+{
+    uint32_t timeout = getTimeout();
+
+    uint32_t waited = 0;
+    for (; (waited < timeout) && (available() < bytes); waited += WAIT_STEP) {
+        delay(WAIT_STEP);
+    }
+    DEBUG(
+        if (waited) {
+            printf("Waited %dms\n", waited);
+        }
+    )
+
+    return available();
+}
+
 String ExStream::readWord()
 {
     char word[WORD_BUF + 1] = { 0 };
@@ -71,7 +92,7 @@ String ExStream::readWord()
                 i--;                //whitespaces in the beginning; skip them
             }
             else {
-                //printf("The read word is '%s'\n", word);
+                DEBUG(printf("ReadWord: %s\n", word));
                 return String(word);
             }
             break;
@@ -82,6 +103,6 @@ String ExStream::readWord()
 
     }
 
-    //printf("THE read word is '%s'\n", word);
+    DEBUG(printf("REadWord: %s\n", word));
     return String(word);
 }

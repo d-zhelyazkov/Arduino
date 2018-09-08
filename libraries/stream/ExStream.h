@@ -3,8 +3,7 @@
 #include "Arduino.h"
 #include "StreamDecorator.h"
 
-#define TIMEOUT 100
-#define RECEIVE_TRIES 10
+
 #define SHARED_INSTANCES 10
 
 
@@ -43,12 +42,12 @@ public:
         for (int i = bytesCount - 1; i >= 0; i--)
         {
             if (!available()) {
-                for (int trY = RECEIVE_TRIES; !available(); trY--) {
-                    if (!trY)
-                        return 1;
-                    delay(TIMEOUT);
+                bool available = waitAvailable();
+                if (!available) {
+                    return 1;
                 }
             }
+
             bytes[i] = read();
         }
 
@@ -76,6 +75,8 @@ public:
     //returns number of bytes cleared
     size_t clear();
 
+    int waitAvailable(int bytes = 1);
+
     //prints "true"/"false"
     size_t print(bool b);
 
@@ -83,7 +84,6 @@ public:
     size_t println(bool b);
 
     void printf(const char *format, ...);
-
 };
 
 extern ExStream ExSerial;
